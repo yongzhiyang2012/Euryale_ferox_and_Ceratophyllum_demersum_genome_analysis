@@ -1,0 +1,17 @@
+### We used the Astral tree as input tree. And then we phased all the terminal tips with a branch length equal to 1. Finally, we used the scripts under the git repository of https://github.com/wk8910/ILS_simulation to further phase the terminal branches.
+
+
+library(phybase)
+
+mptree1 = "(Gbi:8.42830578192951,(Atr:7.42830578192951,(Efe:7.21285980088521,((Peq:4.03387098812285,(Mac:3.47929208055776,Osa:3.47929208055776):0.554578907565088):2.1089639809461573,((Lch:4.66567958986927,(Pam:1,Cka:1):3.6656795898692676):1.396895812997258,(Cde:5.96319026502017,((Vvi:3.15249259556257,(Ath:2.7499653165657,Ppe:2.7499653165657):0.40252727899687163):1.7427615344366483,Aco:4.89525412999922):1.0679361350209546):0.09938513784635417):0.08025956620248181):1.0700248318161985):0.21544598104430476):1);"
+
+spname <- species.name(mptree1)
+nodematrix <- read.tree.nodes(str=mptree1, name=spname)$nodes
+nodematrix[,5]<-2
+
+genetrees=1:200000
+for(i in 1:200000){
+      genetrees[i]<-sim.coaltree.sp(rootnode=max(nodematrix[,1]), nodematrix=nodematrix, nspecies=length(spname), seq=rep(1,length(spname)), name=spname)$gt
+}
+write(genetrees,"Angiosperm.simulated.tre")
+
